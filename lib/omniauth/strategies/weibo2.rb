@@ -6,7 +6,8 @@ module OmniAuth
         :site => 'https://api.weibo.com',
         :authorize_url => 'https://api.weibo.com/oauth2/authorize',
         :token_url => 'https://api.weibo.com/oauth2/access_token',
-        :raw_info_url => 'https://api.weibo.com/2/users/show.json'
+        #:get_uid_url => 'https://api.weibo.com/2/account/get_uid.json',
+        :raw_info_url => 'http://api.t.sina.com.cn/account/verify_credentials.json'
       }
 
       def request_phase
@@ -36,7 +37,8 @@ module OmniAuth
 
       def raw_info
         access_token.options[:mode] = :query
-        @raw_info ||= access_token.get(default_options[:client_options][:raw_info_url]).parsed
+        #@uid ||= access_token.get(default_options[:client_options][:get_uid_url]).parsed
+        @raw_info ||= access_token.get("#{default_options[:client_options][:raw_info_url]}").parsed
       end
     end
   end
