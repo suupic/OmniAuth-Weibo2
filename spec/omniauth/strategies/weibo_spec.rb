@@ -1,30 +1,29 @@
 require 'spec_helper'
-require 'omniauth/strategies/weibo2'
+require 'omniauth/strategies/weibo'
 
-describe OmniAuth::Strategies::Weibo2 do
-
+describe OmniAuth::Strategies::Weibo do
   before :each do
     @request = double('Request')
     @request.stub(:params) { {} }
   end
 
   subject do
-    OmniAuth::Strategies::Weibo2.new(nil, @options || {}).tap do |strategy|
+    OmniAuth::Strategies::Weibo.new(nil, @options || {}).tap do |strategy|
       strategy.stub(:request) { @request }
     end
   end
 
   describe '#client_options' do
     it 'has correct site' do
-      subject.options.client_options[:site].should eq('https://api.weibo.com')
+      subject.options.client_options[:site].should eq('http://api.t.sina.com.cn')
     end
 
     it 'has correct authorize path and url' do
-      subject.options.client_options[:authorize_path].should eq('/oauth2/authorize')
+      subject.options.client_options[:authorize_path].should eq('/oauth/authorize')
     end
 
     it 'has correct access token path and url' do
-      subject.options.client_options[:access_token_path].should eq('/oauth2/access_token')
+      subject.options.client_options[:access_token_path].should eq('/oauth/access_token')
     end
   end
 
@@ -94,5 +93,4 @@ describe OmniAuth::Strategies::Weibo2 do
       subject.extra.should be_a(Hash)
     end
   end
-
 end

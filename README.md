@@ -1,6 +1,8 @@
 # OmniAuth Weibo2
 
-**Note:** This gem is designed to work with weibo.com v2 which authorize via OAuth2
+**Note:** This gem is designed to work with weibo.com,
+include double strategies weibo and weibo2, weibo is based-on omniauth-oauth,
+and weibo2 is based-on omniauth-oauth2
 
 ## Getting Started
 This is an example that you might put into a Rails initializer at
@@ -8,6 +10,7 @@ This is an example that you might put into a Rails initializer at
 
 ```ruby
 Rails.application.config.middleware.use OmniAuth::Builder do
+  provider :weibo, "APP_KEY", "APP_SECRET"
   provider :weibo2, "APP_KEY", "APP_SECRET"
 end
 ```

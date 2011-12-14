@@ -1,18 +1,17 @@
-require 'omniauth-oauth2'
+require 'omniauth-oauth'
+
 module OmniAuth
   module Strategies
-    class Weibo2 < OmniAuth::Strategies::OAuth2
+    class Weibo < OmniAuth::Strategies::OAuth
+
+      option :name, "weibo"
+
       option :client_options, {
-        :site => 'https://api.weibo.com',
-        :authorize_path => '/oauth2/authorize',
-        :access_token_path => '/oauth2/access_token'
+        :access_token_path => '/oauth/access_token',
+        :authorize_path => '/oauth/authorize',
+        :request_token_path => '/oauth/request_token/',
+        :site => 'http://api.t.sina.com.cn'
       }
-
-      def request_phase
-        super
-      end
-
-      uid { raw_info['id'] }
 
       info do
         {
@@ -29,20 +28,19 @@ module OmniAuth
         }
       end
 
+      uid { raw_info["id"] }
+
       extra do
-        {:raw_info => raw_info}
+        { 'raw_info' => raw_info }
       end
 
       def raw_info
         access_token.options[:mode] = :query
-        @uid ||= access_token.get('/2/account/get_uid.json').parsed["uid"]
-        @raw_info ||= access_token.get("/2/users/show.json?uid=#{@uid}").parsed
+        @raw_info ||= access_token.get("/account/verify_credentials.json").parsed
       end
-     
-    end
 
-    
+    end
   end
 end
 
-OmniAuth.config.add_camelization 'weibo2', 'Weibo2'
+OmniAuth.config.add_camelization 'weibo', 'Weibo'
